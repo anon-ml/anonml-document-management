@@ -1,14 +1,15 @@
 package ml.anon.docmgmt.model;
 
-import java.io.File;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Representation of a document
+ * Representation of a document.
  *
  * @author mirco
  *
@@ -21,7 +22,10 @@ public class Document {
   private long id;
 
   private String plainText;
-  private File originalFile;
+
+  @JsonIgnore
+  @Lob
+  private byte[] originalFile;
 
   public String getPlainText() {
     return plainText;
@@ -31,11 +35,15 @@ public class Document {
     this.plainText = plainText;
   }
 
-  public File getOriginalFile() {
+  public Long getId() {
+    return id;
+  }
+
+  public byte[] getOriginalFile() {
     return originalFile;
   }
 
-  public void setOriginalFile(File originalFile) {
+  public void setOriginalFile(byte[] originalFile) {
     this.originalFile = originalFile;
   }
 

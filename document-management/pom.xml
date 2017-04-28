@@ -11,6 +11,7 @@
 	<name>document-management</name>
 	<description>Service for document im- and export</description>
 
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -22,6 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<start-class>ml.anon.docmgmt.Application.java</start-class>
 	</properties>
 
 	<dependencies>
@@ -37,6 +39,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+
+
 
 		<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
 		<dependency>
