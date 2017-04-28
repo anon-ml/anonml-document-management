@@ -1,10 +1,10 @@
 package ml.anon.docmgmt.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,34 +17,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Document {
 
+  private final static int MB_5 = 1024 * 1024 * 5;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  private String plainText;
+  @Column(length = MB_5)
+  private String text;
 
   @JsonIgnore
-  @Lob
-  private byte[] originalFile;
+  @Column(length = MB_5)
+  private byte[] file;
 
-  public String getPlainText() {
-    return plainText;
+  public String getText() {
+    return text;
   }
 
-  public void setPlainText(String plainText) {
-    this.plainText = plainText;
+  public void setText(String plainText) {
+    this.text = plainText;
   }
 
   public Long getId() {
     return id;
   }
 
-  public byte[] getOriginalFile() {
-    return originalFile;
+  public byte[] getFile() {
+    return file;
   }
 
-  public void setOriginalFile(byte[] originalFile) {
-    this.originalFile = originalFile;
+  public void setFile(byte[] originalFile) {
+    this.file = originalFile;
   }
 
 

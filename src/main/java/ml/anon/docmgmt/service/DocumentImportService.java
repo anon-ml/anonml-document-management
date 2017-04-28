@@ -22,9 +22,9 @@ class DocumentImportService implements IDocumentImportService {
   public Document doImport(MultipartFile file) throws IOException {
     IPlainTextExtractor extractor = PlainTextExtractorFactory.build(file);
     Document doc = new Document();
-    doc.setOriginalFile(file.getBytes());
+    doc.setFile(file.getBytes());
     String text = extractor.extract(file.getInputStream());
-    doc.setPlainText(text);
+    doc.setText(text);
     return repo.save(doc);
   }
 

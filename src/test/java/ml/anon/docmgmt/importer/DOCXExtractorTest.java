@@ -17,7 +17,7 @@ public class DOCXExtractorTest {
   @Test
   public void simpleExtraction() throws IOException {
     String expected = "Das ist ein Test.\n";
-    String actual = extractor.extract(this.getClass().getResourceAsStream("/simple.docx"));
+    String actual = extractor.extract(this.getClass().getResourceAsStream("/2.docx"));
     assertEquals(expected, actual);
 
   }
