@@ -3,10 +3,9 @@ package ml.anon.docmgmt.extraction;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ml.anon.exception.DocumentManagementException;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
-import ml.anon.docmgmt.exceptions.TextExtractionException;
 
 /**
  * Extracts plain text from DOCX files
@@ -17,7 +16,7 @@ import ml.anon.docmgmt.exceptions.TextExtractionException;
 class DOCXExtractor implements IPlainTextExtractor {
 
   @Override
-  public String extract(InputStream fis) throws TextExtractionException {
+  public String extract(InputStream fis) throws DocumentManagementException {
     XWPFDocument doc;
     try {
       doc = new XWPFDocument(fis);
@@ -26,7 +25,7 @@ class DOCXExtractor implements IPlainTextExtractor {
       ex.close();
       return text;
     } catch (IOException e) {
-      throw new TextExtractionException(e);
+      throw new DocumentManagementException(e);
     }
 
   }

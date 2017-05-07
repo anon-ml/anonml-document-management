@@ -1,8 +1,9 @@
 package ml.anon.docmgmt.extraction;
 
+import ml.anon.exception.DocumentManagementException;
+
 import java.io.InputStream;
 
-import ml.anon.docmgmt.exceptions.TextExtractionException;
 
 public interface IPlainTextExtractor {
 
@@ -11,8 +12,8 @@ public interface IPlainTextExtractor {
    *
    * @param stream the original file
    * @return the plain text
-   * @throws TextExtractionException on IO or extraction error
+   * @throws DocumentManagementException if the text can not be extracted
    */
-  public String extract(InputStream stream) throws TextExtractionException;
+  public String extract(InputStream stream) throws DocumentManagementException;
 
 }
