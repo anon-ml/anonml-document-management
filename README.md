@@ -9,7 +9,7 @@
 | Method | Path                  | Result | Comment |
 |--------|-----------------------|--------|---------|
 | GET    | /document/{id}        |the document (id, plain text)|         |
-| POST   | /document             | 201, link to document in header|expected parameter is the file|
+| POST   | /document/import             | 201, link to document in header|expected parameter is the file|
 | POST   | /document/{id}/export | - |         |
 
 
