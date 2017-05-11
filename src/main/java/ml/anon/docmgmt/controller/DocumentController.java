@@ -7,9 +7,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,8 +26,8 @@ public class DocumentController {
     // http://localhost:8080/upload
 
 
-    @PostMapping("/document")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) throws IOException {
+    @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity<?> upload(@RequestParam("doc") MultipartFile file) throws IOException {
         Document imported = service.doImport(file);
         Link link = links.linkToSingleResource(Document.class, imported.getId());
         return ResponseEntity.created(URI.create(link.getHref())).build();
