@@ -1,6 +1,6 @@
 package ml.anon.docmgmt.controller;
 
-import ml.anon.docmgmt.model.Document;
+import ml.anon.model.docmgmt.Document;
 import ml.anon.docmgmt.service.IDocumentImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;

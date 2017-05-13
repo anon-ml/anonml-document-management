@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import ml.anon.docmgmt.model.Document;
+import ml.anon.model.docmgmt.Document;
 
 /**
  * Extracts the text and saves the file and text to the database
