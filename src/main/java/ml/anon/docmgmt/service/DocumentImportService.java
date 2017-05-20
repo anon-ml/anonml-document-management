@@ -2,9 +2,8 @@ package ml.anon.docmgmt.service;
 
 import lombok.SneakyThrows;
 import ml.anon.annotation.Chunker;
-import ml.anon.docmgmt.extraction.IPlainTextExtractor;
-import ml.anon.docmgmt.extraction.PlainTextExtractorFactory;
-import ml.anon.docmgmt.model.DocumentRepository;
+import ml.anon.docmgmt.controller.DocumentRepository;
+import ml.anon.docmgmt.extraction.PlainTextExtractor;
 import ml.anon.model.docmgmt.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +24,13 @@ class DocumentImportService implements IDocumentImportService {
     @SneakyThrows
     @Override
     public Document doImport(MultipartFile file) {
-        IPlainTextExtractor extractor = PlainTextExtractorFactory.build(file);
-        String text = extractor.extract(file.getInputStream());
-        List<String> chunked = chunker.chunk(text);
-        return repo.save(Document.builder().file(file.getBytes()).fileName(file.getOriginalFilename()).text(text).chunks(chunked).build());
+        PlainTextExtractor extractor = PlainTextExtractor.build(file);
+        PlainTextExtractor.ExtractionResult extract = extractor.extract(file.getInputStream());
+
+        List<String> text = extract.getPaginated();
+        List<String> chunked = chunker.chunk(extract.getFull());
+        return repo.save(Document.builder().file(file.getBytes()).fileName(file.getOriginalFilename()).text(text).chunks(chunked).originalFileType(extract.getType()).build());
     }
+
 
 }

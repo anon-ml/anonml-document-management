@@ -1,4 +1,4 @@
-package ml.anon.docmgmt.model;
+package ml.anon.docmgmt.controller;
 
 import ml.anon.model.docmgmt.Document;
 import org.springframework.data.mongodb.repository.MongoRepository;

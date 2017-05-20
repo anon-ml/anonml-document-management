@@ -1,6 +1,7 @@
 package ml.anon.docmgmt.controller;
 
-import ml.anon.docmgmt.model.DocumentRepository;
+import ml.anon.docmgmt.export.Export;
+import ml.anon.docmgmt.misc.HtmlConvert;
 import ml.anon.docmgmt.service.IDocumentImportService;
 import ml.anon.model.docmgmt.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 @RepositoryRestController
 public class DocumentController {
@@ -25,6 +26,7 @@ public class DocumentController {
     @Autowired
     private EntityLinks links;
 
+
     @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
     public ResponseEntity<?> bulkUpload(@RequestParam("doc") MultipartFile... file) throws IOException {
         for (MultipartFile multipartFile : file) {
@@ -35,13 +37,17 @@ public class DocumentController {
 
     @PostMapping("/document/{id}/export")
     public ResponseEntity<?> export(@PathVariable String id) {
-        if ("all".equals(id)) {
-            return ResponseEntity.ok(repo.findAll().stream().map(Document::getText).collect(Collectors.toList()));
+        Document one = repo.findOne(id);
+        return ResponseEntity.ok().body(Export.export(one));
+    }
 
-        } else {
-            return ResponseEntity.ok().body(repo.findOne(id));
-        }
 
+    @GetMapping(value = "/document/{id}/htmlView")
+    public ResponseEntity<?> createHtmlView(@PathVariable String id) {
+        Document one = repo.findOne(id);
+        HtmlConvert htmlConvert = new HtmlConvert();
+        String result = htmlConvert.toHtml(new ByteArrayInputStream(one.getFile()), one.getOriginalFileType());
+        return ResponseEntity.ok(result);
     }
 
 
