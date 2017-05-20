@@ -11,6 +11,7 @@
 | GET    | /document/{id}        |the document (id, plain text)|         |
 | POST   | /document/import             | 201, link to document in header|expected parameter is the file|
 | POST   | /document/{id}/export | - |         |
+| GET | /document/{id}/htmlView | HTML view of the document | only for pdf documents atm. |
 
 
 
