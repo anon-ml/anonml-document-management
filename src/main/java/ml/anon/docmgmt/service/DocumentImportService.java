@@ -2,11 +2,11 @@ package ml.anon.docmgmt.service;
 
 import ml.anon.docmgmt.extraction.IPlainTextExtractor;
 import ml.anon.docmgmt.extraction.PlainTextExtractorFactory;
+import ml.anon.docmgmt.model.DocumentRepository;
 import ml.anon.model.docmgmt.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +20,7 @@ class DocumentImportService implements IDocumentImportService {
 
 
     @Autowired
-    private CrudRepository<Document, Long> repo;
+    private DocumentRepository repo;
 
 
     @Override

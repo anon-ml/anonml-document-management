@@ -18,6 +18,7 @@ public final class PlainTextExtractorFactory {
     @SuppressWarnings("deprecation")
     public static IPlainTextExtractor build(MultipartFile file) throws DocumentManagementException {
         IPlainTextExtractor extractor;
+        System.err.println(file);
         try {
             if (DocumentFactoryHelper.hasOOXMLHeader(new BufferedInputStream(file.getInputStream()))) {
                 extractor = new DOCXExtractor();
