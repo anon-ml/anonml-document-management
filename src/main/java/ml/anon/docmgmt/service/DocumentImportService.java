@@ -1,5 +1,7 @@
 package ml.anon.docmgmt.service;
 
+import lombok.SneakyThrows;
+import ml.anon.annotation.Chunker;
 import ml.anon.docmgmt.extraction.IPlainTextExtractor;
 import ml.anon.docmgmt.extraction.PlainTextExtractorFactory;
 import ml.anon.docmgmt.model.DocumentRepository;
@@ -10,28 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.List;
 
 @Service
 class DocumentImportService implements IDocumentImportService {
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(DocumentImportService.class);
-
-
+    private final Chunker chunker = new Chunker();
     @Autowired
     private DocumentRepository repo;
 
-
+    @SneakyThrows
     @Override
-    public Document doImport(MultipartFile file) throws IOException {
+    public Document doImport(MultipartFile file) {
         IPlainTextExtractor extractor = PlainTextExtractorFactory.build(file);
-        Document doc = new Document();
-        doc.setFile(file.getBytes());
         String text = extractor.extract(file.getInputStream());
-        LOGGER.info("Extracted " + text);
-        doc.setText(text);
-        return repo.save(doc);
+        List<String> chunked = chunker.chunk(text);
+        return repo.save(Document.builder().file(file.getBytes()).fileName(file.getOriginalFilename()).text(text).chunks(chunked).build());
     }
 
 }
