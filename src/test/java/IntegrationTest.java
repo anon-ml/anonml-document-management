@@ -4,15 +4,17 @@
 
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.InputStream;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsNull.notNullValue;
+
 //import static io.restassured.matcher.RestAssuredMatchers.*;
 //import static org.hamcrest.Matchers.*;
-
+@Ignore
 public class IntegrationTest {
 
     @BeforeClass
