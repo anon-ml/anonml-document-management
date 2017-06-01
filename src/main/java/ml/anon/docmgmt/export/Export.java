@@ -11,6 +11,8 @@ import java.io.*;
  */
 public abstract class Export {
 
+    protected final Anonymizer anonymizer = new Anonymizer();
+
 
     public static File export(Document doc) {
         if (doc.getOriginalFileType() == FileType.PDF) {
@@ -26,12 +28,14 @@ public abstract class Export {
 
         private final HtmlConvert converter = new HtmlConvert();
 
+
         @Override
         protected File doExport(Document doc) {
             try {
                 File outfile = File.createTempFile(doc.getFileName(), ".html");
                 Writer output = new PrintWriter(outfile, "utf-8");
-                output.write(converter.toHtml(new ByteArrayInputStream(doc.getFile()), FileType.PDF));
+                String text = converter.toHtml(new ByteArrayInputStream(doc.getFile()), FileType.PDF);
+                output.write(anonymizer.anonymize(text, doc.getAnonymizations()));
                 output.close();
                 return outfile;
             } catch (IOException e) {

@@ -33,6 +33,11 @@ public class IntegrationTest {
     }
 
     @Test
+    public void bulkExport() {
+        given().when().post("/document/export");
+    }
+
+    @Test
     public void bulkUpload() {
         InputStream resource = IntegrationTest.class.getResourceAsStream("vr_44_loesung.pdf");
         InputStream resource2 = IntegrationTest.class.getResourceAsStream("zr_71_loesung.pdf");
