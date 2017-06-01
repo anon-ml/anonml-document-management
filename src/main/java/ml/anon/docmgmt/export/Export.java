@@ -2,11 +2,9 @@ package ml.anon.docmgmt.export;
 
 import ml.anon.exception.DocumentManagementException;
 import ml.anon.model.docmgmt.Document;
+import ml.anon.model.docmgmt.FileType;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Created by mirco on 20.05.17.
@@ -15,7 +13,7 @@ public abstract class Export {
 
 
     public static File export(Document doc) {
-        if (doc.getOriginalFileType() == Document.FileType.PDF) {
+        if (doc.getOriginalFileType() == FileType.PDF) {
             return new PDFExport().doExport(doc);
         } else {
             throw new DocumentManagementException("filetype not supported yet", null);
@@ -26,12 +24,14 @@ public abstract class Export {
 
     private static class PDFExport extends Export {
 
+        private final HtmlConvert converter = new HtmlConvert();
+
         @Override
         protected File doExport(Document doc) {
             try {
                 File outfile = File.createTempFile(doc.getFileName(), ".html");
                 Writer output = new PrintWriter(outfile, "utf-8");
-                output.write(doc.getHtmlView());
+                output.write(converter.toHtml(new ByteArrayInputStream(doc.getFile()), FileType.PDF));
                 output.close();
                 return outfile;
             } catch (IOException e) {

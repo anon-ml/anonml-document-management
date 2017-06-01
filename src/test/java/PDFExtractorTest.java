@@ -1,5 +1,5 @@
+import ml.anon.docmgmt.extraction.ExtractionResult;
 import ml.anon.docmgmt.extraction.PDFExtractor;
-import ml.anon.docmgmt.extraction.PlainTextExtractor;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -23,12 +23,12 @@ public class PDFExtractorTest {
     public void pdfExtraction() {
         InputStream resource = IntegrationTest.class.getResourceAsStream("vr_44_loesung.pdf");
         PDFExtractor pdfExtractor = new PDFExtractor();
-        PlainTextExtractor.ExtractionResult extract = pdfExtractor.extract(resource);
+        ExtractionResult extract = pdfExtractor.extract(resource);
         assertThat(extract, notNullValue());
 
-        assertThat(extract.getFull(), containsString("IM NAMEN DES VOLKES"));
-        assertThat(extract.getFull().length(), greaterThan(2000));
-        assertThat(extract.getFull(), not(containsString("ヒラギノ明朝")));
+        assertThat(extract.getFullText(), containsString("IM NAMEN DES VOLKES"));
+        assertThat(extract.getFullText().length(), greaterThan(2000));
+        assertThat(extract.getFullText(), not(containsString("ヒラギノ明朝")));
 
         assertThat(extract.getPaginated(), notNullValue());
         assertThat(extract.getPaginated().size(), is(21));

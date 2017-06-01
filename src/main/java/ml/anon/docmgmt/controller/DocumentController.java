@@ -1,7 +1,7 @@
 package ml.anon.docmgmt.controller;
 
+import lombok.extern.java.Log;
 import ml.anon.docmgmt.export.Export;
-import ml.anon.docmgmt.misc.HtmlConvert;
 import ml.anon.docmgmt.service.IDocumentImportService;
 import ml.anon.model.docmgmt.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RepositoryRestController
+@Log
 public class DocumentController {
 
     @Autowired
@@ -29,25 +31,18 @@ public class DocumentController {
 
     @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
     public ResponseEntity<?> bulkUpload(@RequestParam("doc") MultipartFile... file) throws IOException {
+        List<Document> imported = new ArrayList<>();
         for (MultipartFile multipartFile : file) {
-            Document imported = service.doImport(multipartFile);
+            imported.add(service.doImport(multipartFile));
         }
         return ResponseEntity.created(links.linkFor(Document.class).toUri()).build();
     }
+
 
     @PostMapping("/document/{id}/export")
     public ResponseEntity<?> export(@PathVariable String id) {
         Document one = repo.findOne(id);
         return ResponseEntity.ok().body(Export.export(one));
-    }
-
-
-    @GetMapping(value = "/document/{id}/htmlView")
-    public ResponseEntity<?> createHtmlView(@PathVariable String id) {
-        Document one = repo.findOne(id);
-        HtmlConvert htmlConvert = new HtmlConvert();
-        String result = htmlConvert.toHtml(new ByteArrayInputStream(one.getFile()), one.getOriginalFileType());
-        return ResponseEntity.ok(result);
     }
 
 

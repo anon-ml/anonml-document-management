@@ -2,7 +2,7 @@ package ml.anon.docmgmt.extraction;
 
 import lombok.extern.java.Log;
 import ml.anon.exception.DocumentManagementException;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.model.docmgmt.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -13,7 +13,6 @@ import java.io.InputStream;
  * Created by mirco on 11.05.17.
  */
 @Log
-
 public class PDFExtractor extends PlainTextExtractor {
 
 
@@ -29,7 +28,7 @@ public class PDFExtractor extends PlainTextExtractor {
             strip.setPageEnd(PAGE_END);
             String paginatable = strip.getText(pd);
             pd.close();
-            return ExtractionResult.builder().full(full).paginated(paginate(paginatable)).type(Document.FileType.PDF).build();
+            return ExtractionResult.builder().fullText(full).paginated(paginate(paginatable)).type(FileType.PDF).build();
         } catch (IOException e) {
             throw new DocumentManagementException(e);
         }

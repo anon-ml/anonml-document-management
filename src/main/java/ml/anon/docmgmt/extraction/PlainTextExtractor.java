@@ -1,11 +1,8 @@
 package ml.anon.docmgmt.extraction;
 
 import com.google.common.base.Splitter;
-import lombok.Builder;
-import lombok.Data;
 import lombok.extern.java.Log;
 import ml.anon.exception.DocumentManagementException;
-import ml.anon.model.docmgmt.Document;
 import org.apache.poi.poifs.filesystem.DocumentFactoryHelper;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,19 +42,16 @@ public abstract class PlainTextExtractor {
      */
     public abstract ExtractionResult extract(InputStream stream) throws DocumentManagementException;
 
+    /**
+     * Create a list with plain text pages
+     *
+     * @param text
+     * @return
+     */
     protected final List<String> paginate(String text) {
         return Splitter.on(PAGE_END).splitToList(text);
     }
 
-    @Data
-    @Builder
-    public static class ExtractionResult {
-
-        private final List<String> paginated;
-        private final String full;
-        private Document.FileType type;
-
-    }
 }
 
 

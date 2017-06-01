@@ -1,7 +1,7 @@
 package ml.anon.docmgmt.extraction;
 
 import ml.anon.exception.DocumentManagementException;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.model.docmgmt.FileType;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
@@ -24,7 +24,7 @@ class DOCXExtractor extends PlainTextExtractor {
 
             String text = ex.getText();
             ex.close();
-            return ExtractionResult.builder().full(text).type(Document.FileType.DOCX).build();
+            return ExtractionResult.builder().fullText(text).type(FileType.DOCX).build();
         } catch (IOException e) {
             throw new DocumentManagementException(e);
         }

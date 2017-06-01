@@ -1,8 +1,8 @@
-package ml.anon.docmgmt.misc;
+package ml.anon.docmgmt.export;
 
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.model.docmgmt.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.fit.pdfdom.PDFDomTree;
 
@@ -15,18 +15,15 @@ import java.io.Writer;
  */
 
 @Log
-public class HtmlConvert {
+class HtmlConvert {
 
 
     @SneakyThrows
-    public String toHtml(InputStream document, Document.FileType type) {
+    public String toHtml(InputStream document, FileType type) {
 
-        if (type == Document.FileType.PDF) {
-
+        if (type == FileType.PDF) {
             PDDocument pdDocument = PDDocument.load(document);
-
             PDFDomTree parser = new PDFDomTree();
-
             Writer output = new StringWriter();
             parser.writeText(pdDocument, output);
             String html = output.toString();
