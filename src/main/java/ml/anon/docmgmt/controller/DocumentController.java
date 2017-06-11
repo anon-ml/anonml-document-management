@@ -3,6 +3,7 @@ package ml.anon.docmgmt.controller;
 import lombok.extern.java.Log;
 import ml.anon.docmgmt.export.Export;
 import ml.anon.docmgmt.service.IDocumentImportService;
+import ml.anon.model.anonymization.Anonymization;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @RepositoryRestController
 @Log
@@ -39,6 +41,21 @@ public class DocumentController {
         Document body = service.doImport(bytes, title);
         log.info("Result: " + body);
         return ResponseEntity.ok(body);
+    }
+
+    @RequestMapping(value = "/document", method = RequestMethod.PUT, consumes = "application/json")
+    public ResponseEntity<Document> update(@PathVariable String id, List<Anonymization> anonymizationList) {
+        Document one = repo.findOne(id);
+        one.setAnonymizations(anonymizationList);
+        repo.save(one);
+        return ResponseEntity.ok(one);
+    }
+
+    @GetMapping(value = "/document/{id}/")
+    public Document getDocument(@PathVariable String id) {
+        log.info("get by id " + id);
+        Document one = repo.findOne(id);
+        return one;
     }
 
 
