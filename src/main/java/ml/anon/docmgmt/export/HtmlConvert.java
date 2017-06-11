@@ -28,6 +28,7 @@ class HtmlConvert {
             parser.writeText(pdDocument, output);
             String html = output.toString();
             output.close();
+            pdDocument.close();
             return html;
         } else {
             log.warning("only pdf supported");

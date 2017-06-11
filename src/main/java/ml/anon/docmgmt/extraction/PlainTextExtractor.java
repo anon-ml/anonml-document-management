@@ -4,7 +4,6 @@ import com.google.common.base.Splitter;
 import lombok.extern.java.Log;
 import ml.anon.exception.DocumentManagementException;
 import org.apache.poi.poifs.filesystem.DocumentFactoryHelper;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -16,10 +15,10 @@ public abstract class PlainTextExtractor {
     protected static final String PAGE_END = "###+++ PAGE END +++###";
 
     @SuppressWarnings("deprecation")
-    public static PlainTextExtractor build(MultipartFile file) throws DocumentManagementException {
+    public static PlainTextExtractor build(InputStream file) throws DocumentManagementException {
         PlainTextExtractor extractor;
         try {
-            if (DocumentFactoryHelper.hasOOXMLHeader(new BufferedInputStream(file.getInputStream()))) {
+            if (DocumentFactoryHelper.hasOOXMLHeader(new BufferedInputStream(file))) {
                 extractor = new DOCXExtractor();
                 log.info("Creating DOCXExtractor");
             } else {
@@ -27,8 +26,7 @@ public abstract class PlainTextExtractor {
                 log.info("Creating PDFExtractor");
             }
         } catch (IOException e) {
-            log.severe("Not supported: " + file.getOriginalFilename());
-            throw new DocumentManagementException("Not supported: " + file.getOriginalFilename(), e);
+            throw new DocumentManagementException("Unknown file type", e);
         }
         return extractor;
     }
