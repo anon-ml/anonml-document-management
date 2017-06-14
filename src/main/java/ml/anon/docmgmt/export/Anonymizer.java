@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Anonymizer {
 
-    public static final ArrayList<Anonymization> EMPTY = new ArrayList<>();
+    private static final ArrayList<Anonymization> EMPTY = new ArrayList<>();
 
     /**
      * Replaces the words with their anonymizations
