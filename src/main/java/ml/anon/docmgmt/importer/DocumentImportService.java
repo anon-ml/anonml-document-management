@@ -1,7 +1,6 @@
-package ml.anon.docmgmt.service;
+package ml.anon.docmgmt.importer;
 
 import lombok.SneakyThrows;
-import ml.anon.annotation.Chunker;
 import ml.anon.docmgmt.controller.DocumentRepository;
 import ml.anon.docmgmt.extraction.ExtractionResult;
 import ml.anon.docmgmt.extraction.PlainTextExtractor;
@@ -21,7 +20,9 @@ import java.util.List;
 class DocumentImportService implements IDocumentImportService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DocumentImportService.class);
-    private final Chunker chunker = new Chunker();
+
+    @Autowired
+    private TokenizerService tokenizerService;
     @Autowired
     private DocumentRepository repo;
 
@@ -35,7 +36,8 @@ class DocumentImportService implements IDocumentImportService {
         ExtractionResult extract = extractor.extract(new FileInputStream(tempFile));
 
         List<String> text = extract.getPaginated();
-        List<String> chunked = chunker.chunk(extract.getFullText());
+        List<String> chunked = tokenizerService.tokenize(extract.getFullText());
+
         return repo.save(Document.builder().file(file).fileName(fileName).text(text).chunks(chunked).originalFileType(extract.getType()).build());
     }
 

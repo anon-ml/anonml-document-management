@@ -1,4 +1,4 @@
-package ml.anon.docmgmt.service;
+package ml.anon.docmgmt.importer;
 
 import ml.anon.model.docmgmt.Document;
 

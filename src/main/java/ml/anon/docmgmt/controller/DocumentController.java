@@ -2,7 +2,7 @@ package ml.anon.docmgmt.controller;
 
 import lombok.extern.java.Log;
 import ml.anon.docmgmt.export.Export;
-import ml.anon.docmgmt.service.IDocumentImportService;
+import ml.anon.docmgmt.importer.IDocumentImportService;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +35,13 @@ public class DocumentController {
 
     @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
     public ResponseEntity<Document> bulkUpload(@RequestParam("doc") String file, @RequestParam("title") String title) throws IOException {
-        log.info("Importing " + title);
+        StopWatch stopWatch = new StopWatch("Import document " + title);
+        stopWatch.start();
         byte[] bytes = Base64Utils.decodeFromString(file);
         Document body = service.doImport(bytes, title);
         log.info("Result: " + body);
+        stopWatch.stop();
+        log.info(stopWatch.shortSummary());
         return ResponseEntity.ok(body);
     }
 
