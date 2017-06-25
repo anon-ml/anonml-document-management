@@ -21,7 +21,7 @@ public class Anonymizer {
      * @return
      */
     public String anonymize(String document, List<Anonymization> anon) {
-        String anonymized = document;
+        String anonymized = document.replace("&#160;", " ").replace("  ", " ");
 
         for (Anonymization anonymization : MoreObjects.firstNonNull(anon, EMPTY)) {
             anonymized = anonymized.replaceAll(anonymization.getOriginal(), anonymization.getReplacement());
