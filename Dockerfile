@@ -8,9 +8,10 @@ RUN echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mon
 RUN apt-get update
 RUN mkdir -p /data/db
 RUN apt-get install -y mongodb-org
+RUN sudo apt-get install -y poppler-utils
 
 COPY start.sh /
-ADD ./target/docmgmt-0.0.1-SNAPSHOT.jar /
+ADD ./target/docmgmt-0.0.2-SNAPSHOT.jar /
 
 EXPOSE 27017
 EXPOSE 9001

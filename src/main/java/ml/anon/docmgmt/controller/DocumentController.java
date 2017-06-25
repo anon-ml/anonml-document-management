@@ -69,8 +69,8 @@ public class DocumentController {
         Document one = repo.findOne(id);
         File export = Export.export(one);
 
-        response.setContentType("text/html");
-        response.addHeader("Content-Disposition", "attachment; filename=" + one.fileNameAs("html"));
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition", "attachment; filename=" + one.fileNameAs("zip"));
         IOUtils.copy(new FileInputStream(export), response.getOutputStream());
         response.getOutputStream().flush();
 

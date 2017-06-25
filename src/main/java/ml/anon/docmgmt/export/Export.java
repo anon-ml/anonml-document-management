@@ -16,7 +16,7 @@ public abstract class Export {
 
     public static File export(Document doc) {
         if (doc.getOriginalFileType() == FileType.PDF) {
-            return new PDFExport().doExport(doc);
+            return new PopplerExport().doExport(doc);
         } else {
             throw new DocumentManagementException("filetype not supported yet", null);
         }
