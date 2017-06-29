@@ -10,7 +10,6 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
@@ -53,7 +52,7 @@ public class PopplerExport extends Export {
 
     }
 
-    @NotNull
+
     private String callPdfToHTML(Document doc, File tempIn) throws IOException {
         String outPath = FileUtils.getTempDirectoryPath() + RandomStringUtils.randomAlphanumeric(10);
         File dir = new File(outPath);

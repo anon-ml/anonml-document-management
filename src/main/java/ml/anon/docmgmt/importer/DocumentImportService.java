@@ -38,7 +38,9 @@ class DocumentImportService implements IDocumentImportService {
         List<String> text = extract.getPaginated();
         List<String> chunked = tokenizerService.tokenize(extract.getFullText());
 
-        return repo.save(Document.builder().file(file).fileName(fileName).text(text).fullText(extract.getFullText()).chunks(chunked).originalFileType(extract.getType()).build());
+        return repo.save(Document.builder().file(file).fileName(fileName).text(text).fullText(extract.getFullText())
+                .displayableText(extract.getFullText().replaceAll("\n", "<br/>"))
+                .chunks(chunked).originalFileType(extract.getType()).build());
     }
 
 
