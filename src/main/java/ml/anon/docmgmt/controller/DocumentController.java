@@ -81,9 +81,9 @@ public class DocumentController {
 
     }
     
-    @RequestMapping(value = "/document/tokenize/", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> tokenize(@RequestBody String toTokenize) {
-        log.info("´tokenize " + toTokenize);
+    @RequestMapping(value = "/document/tokenize/text", method = RequestMethod.POST)
+    public ResponseEntity<List<String>> tokenize(@RequestParam("text") String toTokenize) {
+        log.info("tokenize " + toTokenize);
         return ResponseEntity.ok(tokenizerService.tokenize(toTokenize));
     }
 
