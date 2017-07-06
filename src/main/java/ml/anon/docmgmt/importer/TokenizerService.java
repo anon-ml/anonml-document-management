@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * Created by mirco on 15.06.17.
  */
 @Service
-class TokenizerService {
+public class TokenizerService {
 
     private DiffTokenizer tokenizer = new DiffTokenizer();
 

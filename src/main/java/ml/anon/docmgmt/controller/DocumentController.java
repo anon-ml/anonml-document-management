@@ -3,6 +3,7 @@ package ml.anon.docmgmt.controller;
 import lombok.extern.java.Log;
 import ml.anon.docmgmt.export.Export;
 import ml.anon.docmgmt.importer.IDocumentImportService;
+import ml.anon.docmgmt.importer.TokenizerService;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @RepositoryRestController
 @Log
@@ -31,6 +33,9 @@ public class DocumentController {
 
     @Autowired
     private EntityLinks links;
+    
+    @Autowired
+    private TokenizerService tokenizerService;
 
 
     @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
@@ -74,6 +79,12 @@ public class DocumentController {
         IOUtils.copy(new FileInputStream(export), response.getOutputStream());
         response.getOutputStream().flush();
 
+    }
+    
+    @RequestMapping(value = "/document/tokenize/", method = RequestMethod.POST)
+    public ResponseEntity<List<String>> tokenize(@RequestBody String toTokenize) {
+        log.info("´tokenize " + toTokenize);
+        return ResponseEntity.ok(tokenizerService.tokenize(toTokenize));
     }
 
 
