@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class TokenizerService {
 
+    public static final String SENTENCE_BOUNDARY = "";
     private DiffTokenizer tokenizer = new DiffTokenizer();
     private ISentenceSplitter splitter = new RuleSplitter();
 
@@ -29,7 +30,7 @@ public class TokenizerService {
         for (String sentence : segments) {
             Iterable<String> sentenceTokens = tokenizer.init(sentence).filteredAndNormalizedTokens(3,0,false,false);
             tokens.addAll(Lists.newArrayList(sentenceTokens));
-            tokens.add("");
+            tokens.add(SENTENCE_BOUNDARY);
         }
         return tokens;
     }
