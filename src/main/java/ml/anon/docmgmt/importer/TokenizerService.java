@@ -33,9 +33,9 @@ public class TokenizerService {
         for (String sentence : segments) {
             Iterable<String> sentenceTokens = tokenizer.init(sentence).filteredAndNormalizedTokens(3, 0, false, false);
             tokens.addAll(Lists.newArrayList(sentenceTokens).stream().map(s -> s.trim()).collect(Collectors.toList()));
-
             tokens.add(SENTENCE_BOUNDARY);
         }
+        tokens.removeIf(s -> StringUtils.isBlank(s));
         tokens.replaceAll(s -> {
             if(s.equals(SENTENCE_BOUNDARY)) {
                 return "";
