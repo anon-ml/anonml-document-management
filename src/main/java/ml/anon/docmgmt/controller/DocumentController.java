@@ -7,8 +7,13 @@ import ml.anon.docmgmt.importer.TokenizerService;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StopWatch;
@@ -33,7 +38,7 @@ public class DocumentController {
 
     @Autowired
     private EntityLinks links;
-    
+
     @Autowired
     private TokenizerService tokenizerService;
 
@@ -80,7 +85,10 @@ public class DocumentController {
         response.getOutputStream().flush();
 
     }
-    
+
+
+
+
     @RequestMapping(value = "/document/tokenize/text", method = RequestMethod.POST)
     public ResponseEntity<List<String>> tokenize(@RequestParam("text") String toTokenize) {
         log.info("tokenize " + toTokenize);

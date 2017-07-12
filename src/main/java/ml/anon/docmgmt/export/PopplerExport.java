@@ -10,6 +10,9 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.FileSystemUtils;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
@@ -34,6 +37,7 @@ public class PopplerExport extends Export {
 
 
         try {
+
             File tempIn = File.createTempFile(doc.getFileName(), ".temp");
             String outPath = callPdfToHTML(doc, tempIn);
 
