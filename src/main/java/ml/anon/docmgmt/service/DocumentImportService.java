@@ -1,4 +1,4 @@
-package ml.anon.docmgmt.importer;
+package ml.anon.docmgmt.service;
 
 import lombok.SneakyThrows;
 import ml.anon.docmgmt.controller.DocumentRepository;

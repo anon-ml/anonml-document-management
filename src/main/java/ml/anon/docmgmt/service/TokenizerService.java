@@ -1,4 +1,4 @@
-package ml.anon.docmgmt.importer;
+package ml.anon.docmgmt.service;
 
 import com.google.common.collect.Lists;
 import de.tudarmstadt.lt.seg.Segment;

@@ -1,4 +1,4 @@
-import ml.anon.docmgmt.importer.TokenizerService;
+import ml.anon.docmgmt.service.TokenizerService;
 import org.junit.Test;
 
 import java.util.List;
