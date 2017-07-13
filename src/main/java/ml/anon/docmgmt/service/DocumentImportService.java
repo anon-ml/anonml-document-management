@@ -3,7 +3,7 @@ package ml.anon.docmgmt.service;
 import lombok.SneakyThrows;
 import ml.anon.docmgmt.controller.DocumentRepository;
 import ml.anon.docmgmt.extraction.ExtractionResult;
-import ml.anon.docmgmt.extraction.PlainTextExtractor;
+import ml.anon.docmgmt.extraction.PDFExtractor;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.io.FileInputStream;
 import java.util.List;
 
 @Service
-class DocumentImportService implements IDocumentImportService {
+public class DocumentImportService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DocumentImportService.class);
 
@@ -27,9 +27,8 @@ class DocumentImportService implements IDocumentImportService {
     private DocumentRepository repo;
 
     @SneakyThrows
-    @Override
     public Document doImport(byte[] file, String fileName) {
-        PlainTextExtractor extractor = PlainTextExtractor.build(new ByteArrayInputStream(file));
+        PDFExtractor extractor = new PDFExtractor();
 
         File tempFile = File.createTempFile(fileName, null);
         FileUtils.writeByteArrayToFile(tempFile, file);

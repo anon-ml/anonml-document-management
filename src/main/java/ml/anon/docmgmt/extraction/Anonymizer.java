@@ -1,4 +1,4 @@
-package ml.anon.docmgmt.export;
+package ml.anon.docmgmt.extraction;
 
 import com.google.common.base.MoreObjects;
 import ml.anon.model.anonymization.Anonymization;

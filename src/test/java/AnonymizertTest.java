@@ -1,5 +1,5 @@
 import com.google.common.collect.Lists;
-import ml.anon.docmgmt.export.Anonymizer;
+import ml.anon.docmgmt.extraction.Anonymizer;
 import ml.anon.model.anonymization.Anonymization;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;

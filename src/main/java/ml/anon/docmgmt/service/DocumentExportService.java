@@ -1,6 +1,7 @@
-package ml.anon.docmgmt.export;
+package ml.anon.docmgmt.service;
 
 import lombok.extern.slf4j.Slf4j;
+import ml.anon.docmgmt.extraction.Anonymizer;
 import ml.anon.exception.DocumentManagementException;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.exec.CommandLine;
@@ -10,9 +11,7 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.FileSystemUtils;
+import org.springframework.stereotype.Service;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
@@ -25,19 +24,17 @@ import java.io.IOException;
  * Created by mirco on 25.06.17.
  */
 @Slf4j
-public class PopplerExport extends Export {
+@Service
+public class DocumentExportService {
 
     private final static String COMPLEX_HTML = "-c";
     private final static String SINGLE_PAGE = "-s";
     private final static String PDF_LINKS = "-p";
     private final Anonymizer anonymizer = new Anonymizer();
 
-    @Override
-    protected File doExport(Document doc) throws DocumentManagementException {
 
-
+    public File export(Document doc) throws DocumentManagementException {
         try {
-
             File tempIn = File.createTempFile(doc.getFileName(), ".temp");
             String outPath = callPdfToHTML(doc, tempIn);
 
@@ -47,8 +44,6 @@ public class PopplerExport extends Export {
             IOUtils.write(anon, new FileOutputStream(result));
 
             return zip(outPath, doc.getFileName());
-
-
         } catch (IOException e) {
             e.printStackTrace();
             throw new DocumentManagementException(e);

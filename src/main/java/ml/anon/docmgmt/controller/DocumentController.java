@@ -1,8 +1,9 @@
 package ml.anon.docmgmt.controller;
 
 import lombok.extern.java.Log;
-import ml.anon.docmgmt.export.Export;
-import ml.anon.docmgmt.service.IDocumentImportService;
+import ml.anon.docmgmt.service.DocumentExportService;
+import ml.anon.docmgmt.service.DocumentImportService;
+
 import ml.anon.docmgmt.service.TokenizerService;
 import ml.anon.model.docmgmt.Document;
 import org.apache.commons.io.IOUtils;
@@ -26,7 +27,7 @@ import java.util.List;
 public class DocumentController {
 
     @Autowired
-    private IDocumentImportService service;
+    public DocumentImportService service;
 
     @Autowired
     private DocumentRepository repo;
@@ -36,6 +37,9 @@ public class DocumentController {
 
     @Autowired
     private TokenizerService tokenizerService;
+
+    @Autowired
+    private DocumentExportService documentExportService;
 
 
     @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
@@ -72,7 +76,7 @@ public class DocumentController {
                        HttpServletResponse response, @PathVariable String id) throws IOException {
         log.info("Exporting document: " + id);
         Document one = repo.findOne(id);
-        File export = Export.export(one);
+        File export = documentExportService.export(one);
 
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=" + one.fileNameAs("zip"));
@@ -83,12 +87,6 @@ public class DocumentController {
 
 
 
-
-    @RequestMapping(value = "/document/tokenize/text", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> tokenize(@RequestParam("text") String toTokenize) {
-        log.info("tokenize " + toTokenize);
-        return ResponseEntity.ok(tokenizerService.tokenize(toTokenize));
-    }
 
 
 }
