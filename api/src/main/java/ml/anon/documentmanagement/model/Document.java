@@ -2,7 +2,7 @@ package ml.anon.documentmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import ml.anon.model.anonymization.Anonymization;
+import ml.anon.anonymization.model.Anonymization;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.annotation.Id;
 

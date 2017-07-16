@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import ml.anon.model.anonymization.Anonymization;
+import ml.anon.anonymization.model.Anonymization;
 
 /**
  * Created by mirco on 11.06.17.
