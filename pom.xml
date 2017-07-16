@@ -68,6 +68,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ml.anon</groupId>
+            <artifactId>document-management-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.ablx</groupId>
             <artifactId>seg</artifactId>
             <version>master-SNAPSHOT</version>

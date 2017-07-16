@@ -1,3 +1,5 @@
+package test;
+
 import ml.anon.docmgmt.service.TokenizerService;
 import org.junit.Test;
 
