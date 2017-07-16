@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import ml.anon.model.docmgmt.Document;
+import ml.anon.documentmanagement.model.Document;
 
 @Configuration
 public class RepositoryConfig extends RepositoryRestConfigurerAdapter {

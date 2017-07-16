@@ -2,7 +2,7 @@ package ml.anon.docmgmt.extraction;
 
 import lombok.Builder;
 import lombok.Data;
-import ml.anon.model.docmgmt.FileType;
+import ml.anon.documentmanagement.model.FileType;
 
 import java.util.List;
 

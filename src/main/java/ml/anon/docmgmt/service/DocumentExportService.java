@@ -2,8 +2,8 @@ package ml.anon.docmgmt.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ml.anon.docmgmt.extraction.Anonymizer;
-import ml.anon.exception.DocumentManagementException;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.documentmanagement.exception.DocumentManagementException;
+import ml.anon.documentmanagement.model.Document;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteStreamHandler;

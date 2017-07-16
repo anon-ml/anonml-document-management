@@ -5,7 +5,7 @@ import ml.anon.docmgmt.service.DocumentExportService;
 import ml.anon.docmgmt.service.DocumentImportService;
 
 import ml.anon.docmgmt.service.TokenizerService;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.documentmanagement.model.Document;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 
 @RepositoryRestController
 @Log

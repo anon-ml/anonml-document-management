@@ -4,14 +4,13 @@ import lombok.SneakyThrows;
 import ml.anon.docmgmt.controller.DocumentRepository;
 import ml.anon.docmgmt.extraction.ExtractionResult;
 import ml.anon.docmgmt.extraction.PDFExtractor;
-import ml.anon.model.docmgmt.Document;
+import ml.anon.documentmanagement.model.Document;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;

@@ -2,8 +2,8 @@ package ml.anon.docmgmt.extraction;
 
 import com.google.common.base.Splitter;
 import lombok.extern.java.Log;
-import ml.anon.exception.DocumentManagementException;
-import ml.anon.model.docmgmt.FileType;
+import ml.anon.documentmanagement.exception.DocumentManagementException;
+import ml.anon.documentmanagement.model.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
