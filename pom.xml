@@ -52,6 +52,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <start-class>ml.anon.docmgmt.AppDocumentManagement.java</start-class>
+    <mainClass>ml.anon.docmgmt.AppDocumentManagement</mainClass>
     <poi.version>3.16</poi.version>
   </properties>
 
