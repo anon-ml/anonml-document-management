@@ -32,11 +32,6 @@
       <url>https://jitpack.io</url>
     </repository>
 
-    <repository>
-      <id>nexus</id>
-      <name>acme nexus</name>
-      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
-    </repository>
 
   </repositories>
 
@@ -206,25 +201,6 @@
       </plugin>
 
 
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>0.2.3</version>
-        <executions>
-          <execution>
-            <id>default</id>
-            <goals>
-              <goal>build</goal>
-              <goal>push</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <dockerDirectory>${project.basedir}</dockerDirectory>
-          <imageName>anonml/${project.artifactId}:docmgmt</imageName>
-          <pushImage>true</pushImage>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.8.1</version>
