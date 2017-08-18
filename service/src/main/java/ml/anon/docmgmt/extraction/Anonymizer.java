@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Uses the saved replacements to replace the strings in the final document.
  * Created by mirco on 01.06.17.
  */
 public class Anonymizer {
@@ -24,7 +25,8 @@ public class Anonymizer {
 
     for (Anonymization anonymization : MoreObjects.firstNonNull(anon, EMPTY)) {
       anonymized = anonymized
-          .replaceAll(anonymization.getOriginal(), anonymization.getReplacement());
+          .replaceAll(anonymization.getData().getOriginal(),
+              anonymization.getData().getReplacement());
     }
     return anonymized;
   }

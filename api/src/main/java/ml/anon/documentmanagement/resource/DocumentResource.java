@@ -23,6 +23,7 @@ import lombok.extern.java.Log;
 import ml.anon.anonymization.model.Anonymization;
 
 /**
+ * API Endpoint class to use in different projects
  * Created by mirco on 11.06.17.
  */
 @AllArgsConstructor
@@ -33,29 +34,6 @@ public class DocumentResource implements Read<Document>, Update<Document> {
 
   private RestTemplate restTemplate;
 
-  public ArrayList<Anonymization> removeDuplicates(List<Anonymization> anonymizations) {
-
-    ArrayList<Anonymization> noDuplicate = new ArrayList<Anonymization>();
-
-    ObjectMapper mapper = new ObjectMapper();
-    anonymizations = mapper.convertValue(anonymizations, new TypeReference<List<Anonymization>>() {
-    });
-
-    boolean contained = false;
-    for (Anonymization anon1 : anonymizations) {
-      for (Anonymization anon2 : noDuplicate) {
-        if (anon1.getOriginal().equals(anon2.getOriginal())) {
-          contained = true;
-          break;
-        }
-      }
-      if (!contained) {
-        noDuplicate.add(anon1);
-      }
-      contained = false;
-    }
-    return noDuplicate;
-  }
 
   @Override
   public Document update(String id, Document instance) {
