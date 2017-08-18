@@ -20,36 +20,37 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ToString
-@org.springframework.data.mongodb.core.mapping.Document(collection = "documents")
+@org.springframework.data.mongodb.core.mapping.Document(collection = "Documents")
 public class Document {
 
-    private final static int MB_5 = 1024 * 1024 * 5;
+  private final static int MB_5 = 1024 * 1024 * 5;
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    private String fileName;
+  private String fileName;
 
-    private List<String> text;
+  private List<String> text;
 
-    private String displayableText;
+  private String displayableText;
 
-    private String fullText;
+  private String fullText;
 
-    @NonNull
-    private FileType originalFileType;
+  @NonNull
+  private FileType originalFileType;
 
+  private String nerResult;
 
-    @JsonIgnore
-    private byte[] file;
+  @JsonIgnore
+  private byte[] file;
 
-    private List<String> chunks;
+  private List<String> chunks;
 
-    private List<Anonymization> anonymizations;
+  private List<Anonymization> anonymizations;
 
-    public String fileNameAs(String extension) {
-        return FilenameUtils.removeExtension(fileName) + "." + extension;
-    }
+  public String fileNameAs(String extension) {
+    return FilenameUtils.removeExtension(fileName) + "." + extension;
+  }
 
 
 }
