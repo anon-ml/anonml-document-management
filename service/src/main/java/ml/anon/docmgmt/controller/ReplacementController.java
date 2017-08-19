@@ -49,10 +49,11 @@ public class ReplacementController {
     while (replacement == null) {
       String generate = generate(str, Label.valueOf(label));
       if (!replacements.values().contains(generate)) {
-        replacement = Replacement.builder().original(original).replacement(generate)
+        replacement = Replacement.builder().original(str).replacement(generate)
             .label(Label.valueOf(label)).build();
       }
     }
+    log.info(replacement.toString());
     replacements.put(lookupKey, replacement);
     return replacement;
   }
