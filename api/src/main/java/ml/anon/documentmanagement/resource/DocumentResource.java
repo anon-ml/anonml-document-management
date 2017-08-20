@@ -10,6 +10,7 @@ import ml.anon.documentmanagement.model.FileType;
 import ml.anon.resource.Read;
 import ml.anon.resource.Update;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,8 @@ public class DocumentResource implements Read<Document>, Update<Document> {
   @Override
   public Document update(String id, Document instance) {
     String url = IP + "/document/{id}";
+    System.out.println("##########################################################Accessed update!");
+
     HttpEntity<Document> entity = new HttpEntity<>(instance);
     return restTemplate
         .exchange(url, HttpMethod.PUT, entity, Document.class, id).getBody();
