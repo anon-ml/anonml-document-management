@@ -1,43 +1,39 @@
 package ml.anon.documentmanagement.resource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.annotation.Resource;
 import ml.anon.documentmanagement.model.Document;
-import ml.anon.documentmanagement.model.FileType;
 import ml.anon.resource.Read;
 import ml.anon.resource.Update;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import ml.anon.anonymization.model.Anonymization;
 
 /**
  * API Endpoint class to use in different projects
  * Created by mirco on 11.06.17.
  */
-@AllArgsConstructor
 @Log
+@Component
 public class DocumentResource implements Read<Document>, Update<Document> {
 
-  private final String IP = "http://127.0.0.1:9001";
+  @Value("${documentmanagement.service.url}")
+  private String documentManagementUrl;
 
-  private RestTemplate restTemplate;
+  private RestTemplate restTemplate = new RestTemplate();
 
 
   @Override
   public Document update(String id, Document instance) {
-    String url = IP + "/document/{id}";
+    String url = documentManagementUrl + "/document/{id}";
     HttpEntity<Document> entity = new HttpEntity<>(instance);
     return restTemplate
         .exchange(url, HttpMethod.PUT, entity, Document.class, id).getBody();
@@ -45,14 +41,14 @@ public class DocumentResource implements Read<Document>, Update<Document> {
 
   @Override
   public Document findById(String id) {
-    String url = IP + "/document/{id}";
+    String url = documentManagementUrl + "/document/{id}";
     return restTemplate.getForEntity(url, Document.class, id).getBody();
   }
 
   @Override
   public List<Document> findAll() {
     ResponseEntity<List<Document>> result = restTemplate
-        .exchange(IP + "/document/", HttpMethod.GET, null,
+        .exchange(documentManagementUrl + "/document/", HttpMethod.GET, null,
             new ParameterizedTypeReference<List<Document>>() {
             });
     return result.getBody();
