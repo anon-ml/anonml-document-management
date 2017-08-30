@@ -2,6 +2,7 @@ package ml.anon.docmgmt.controller;
 
 import java.util.List;
 import lombok.extern.java.Log;
+import ml.anon.docmgmt.extraction.Duplicates;
 import ml.anon.docmgmt.service.DocumentExportService;
 import ml.anon.docmgmt.service.DocumentImportService;
 
@@ -41,7 +42,6 @@ public class DocumentController {
   @Autowired
   private DocumentExportService documentExportService;
 
-
   @RequestMapping(value = "/document/import", method = RequestMethod.POST, consumes = "multipart/form-data")
   public ResponseEntity<Document> bulkUpload(@RequestParam("doc") String file,
       @RequestParam("title") String title) throws IOException {
@@ -58,8 +58,9 @@ public class DocumentController {
   @RequestMapping(value = "/document/{id}", method = RequestMethod.PUT)
   public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) {
     log.info("update id " + id);
+    Duplicates duplicates = new Duplicates();
     Document one = repo.findOne(id);
-    one.setAnonymizations(doc.getAnonymizations());
+    one.setAnonymizations(duplicates.removeDuplicates(doc.getAnonymizations()));
     repo.save(one);
     return ResponseEntity.ok(one);
   }
