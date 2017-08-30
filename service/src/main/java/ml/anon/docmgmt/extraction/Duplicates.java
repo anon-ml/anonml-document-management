@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Dismisses doubled anonymizations, since they are used globally
+ * Compares the originals of the anonymizations and dismisses duplicates
  * Created by matthias on 20.08.2017
  */
 public class Duplicates {
 
+    /**
+     * Removes the duplicates by looking at the original value of the anonymization objects
+     * @param anonymizations list of anonymizations from ml and rulebased approaches
+     * @return the list of anonymizations without duplicates
+     */
     public ArrayList<Anonymization> removeDuplicates(List<Anonymization> anonymizations) {
         ArrayList<Anonymization> noDuplicate = new ArrayList<Anonymization>();
 
