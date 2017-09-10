@@ -3,8 +3,12 @@ package ml.anon.documentmanagement.resource;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import ml.anon.documentmanagement.model.Document;
+import ml.anon.exception.BadRequestException;
+import ml.anon.resource.Delete;
 import ml.anon.resource.Read;
+import ml.anon.resource.ReadAll;
 import ml.anon.resource.Update;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,36 +28,42 @@ import lombok.extern.java.Log;
  */
 @Log
 @Component
-public class DocumentResource implements Read<Document>, Update<Document> {
+public class DocumentResource implements Read<Document>, ReadAll<Document>, Update<Document>, Delete {
 
-  @Value("${documentmanagement.service.url}")
-  private String documentManagementUrl;
+    @Value("${documentmanagement.service.url}")
+    private String documentManagementUrl;
 
-  private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
 
-  @Override
-  public Document update(String id, Document instance) {
+    @Override
+    public Document update(String id, Document instance) {
 
-    String url = documentManagementUrl + "/document/{id}";
+        String url = documentManagementUrl + "/document/{id}";
 
-    HttpEntity<Document> entity = new HttpEntity<>(instance);
-    return restTemplate
-        .exchange(url, HttpMethod.PUT, entity, Document.class, id).getBody();
-  }
+        HttpEntity<Document> entity = new HttpEntity<>(instance);
+        return restTemplate
+                .exchange(url, HttpMethod.PUT, entity, Document.class, id).getBody();
+    }
 
-  @Override
-  public Document findById(String id) {
-    String url = documentManagementUrl + "/document/{id}";
-    return restTemplate.getForEntity(url, Document.class, id).getBody();
-  }
+    @Override
+    public Document findById(String id) {
+        String url = documentManagementUrl + "/document/{id}";
+        return restTemplate.getForEntity(url, Document.class, id).getBody();
+    }
 
-  @Override
-  public List<Document> findAll() {
-    ResponseEntity<List<Document>> result = restTemplate
-        .exchange(documentManagementUrl + "/document/", HttpMethod.GET, null,
-            new ParameterizedTypeReference<List<Document>>() {
-            });
-    return result.getBody();
-  }
+    @Override
+    public List<Document> findAll() {
+        ResponseEntity<List<Document>> result = restTemplate
+                .exchange(documentManagementUrl + "/document/", HttpMethod.GET, null,
+                        new ParameterizedTypeReference<List<Document>>() {
+                        });
+
+        return result.getBody();
+    }
+
+    @Override
+    public void delete(String id) throws BadRequestException {
+        restTemplate.delete(documentManagementUrl + "/document/{id}", id);
+    }
 }
