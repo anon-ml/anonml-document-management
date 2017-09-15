@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +52,8 @@ public class Document extends BaseEntity {
     private List<String> chunks;
 
     private List<Anonymization> anonymizations;
+
+    private LocalDateTime lockedAt;
 
     public String fileNameAs(String extension) {
         return FilenameUtils.removeExtension(fileName) + "." + extension;

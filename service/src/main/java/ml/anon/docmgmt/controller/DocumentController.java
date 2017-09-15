@@ -1,5 +1,6 @@
 package ml.anon.docmgmt.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.java.Log;
@@ -9,8 +10,13 @@ import ml.anon.docmgmt.service.DocumentImportService;
 
 import ml.anon.docmgmt.service.TokenizerService;
 import ml.anon.documentmanagement.model.Document;
+import ml.anon.exception.NotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 @RestController
 @Log
@@ -67,10 +74,18 @@ public class DocumentController {
     }
 
     @GetMapping(value = "/document/{id}")
-    public Document getDocument(@PathVariable String id) {
+    public Document getDocument(@PathVariable String id) throws NotFoundException {
         log.info("get by id " + id);
         Document one = repo.findOne(id);
+        if (one == null) {
+            throw new NotFoundException();
+        }
         return one;
+    }
+
+    @GetMapping(value = "/document/count")
+    public int getCount() {
+        return repo.findAll().size();
     }
 
 
@@ -82,10 +97,14 @@ public class DocumentController {
     }
 
 
-    @GetMapping(value = "/document/")
-    public List<Document> getAll() {
+    @GetMapping(value = "/document")
+    public List<Document> getAll(@RequestParam(name = "page", defaultValue = "10") int page) {
         log.info("get all documents");
-        return repo.findAll();
+        if (page >= 0) {
+            return repo.findAll(new PageRequest(page, 10)).getContent();
+        } else {
+            return repo.findAll();
+        }
     }
 
 

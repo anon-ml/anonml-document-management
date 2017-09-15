@@ -12,6 +12,7 @@ import ml.anon.resource.ReadAll;
 import ml.anon.resource.Update;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -46,20 +47,25 @@ public class DocumentResource implements Read<Document>, ReadAll<Document>, Upda
                 .exchange(url, HttpMethod.PUT, entity, Document.class, id).getBody();
     }
 
+    public int getCount() {
+        String url = documentManagementUrl + "/document/count";
+        return restTemplate.getForEntity(url, Integer.class).getBody();
+    }
+
     @Override
     public Document findById(String id) {
         String url = documentManagementUrl + "/document/{id}";
         return restTemplate.getForEntity(url, Document.class, id).getBody();
     }
 
-    @Override
-    public List<Document> findAll() {
-        ResponseEntity<List<Document>> result = restTemplate
-                .exchange(documentManagementUrl + "/document/", HttpMethod.GET, null,
-                        new ParameterizedTypeReference<List<Document>>() {
-                        });
 
-        return result.getBody();
+    @Override
+    public List<Document> findAll(int page) {
+        ResponseEntity<List<Document>> exchange = restTemplate.exchange(documentManagementUrl + "/document?page={page}", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Document>>() {
+                }, page);
+
+        return exchange.getBody();
     }
 
     @Override
