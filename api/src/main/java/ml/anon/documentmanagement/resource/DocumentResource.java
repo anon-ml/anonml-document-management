@@ -3,16 +3,12 @@ package ml.anon.documentmanagement.resource;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import ml.anon.documentmanagement.model.Document;
 import ml.anon.exception.BadRequestException;
-import ml.anon.exception.LockedException;
+import ml.anon.exception.OutdatedException;
 import ml.anon.resource.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,7 +19,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 
 /**
@@ -41,7 +36,7 @@ public class DocumentResource implements Read<Document>, ReadAll<Document>, Upda
 
 
     @Override
-    public Document update(String id, Document instance) throws LockedException {
+    public Document update(String id, Document instance) throws OutdatedException {
 
         String url = documentManagementUrl + "/document/{id}";
 

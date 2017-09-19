@@ -1,7 +1,6 @@
 package ml.anon.docmgmt.controller;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.java.Log;
@@ -12,15 +11,11 @@ import ml.anon.docmgmt.service.DocumentImportService;
 import ml.anon.docmgmt.service.TokenizerService;
 import ml.anon.documentmanagement.model.Document;
 import ml.anon.documentmanagement.model.DocumentState;
-import ml.anon.exception.LockedException;
+import ml.anon.exception.OutdatedException;
 import ml.anon.exception.NotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.support.PageableExecutionUtils;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Base64Utils;
@@ -32,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Objects;
 
 @RestController
 @Log
@@ -68,7 +62,7 @@ public class DocumentController {
     }
 
     @RequestMapping(value = "/document/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) throws LockedException {
+    public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) throws OutdatedException {
         log.info("update id " + id);
         Duplicates duplicates = new Duplicates();
         Document one = repo.findOne(id);
@@ -143,10 +137,10 @@ public class DocumentController {
 
     }
 
-    public void checkVersion(Document updated) throws LockedException {
+    public void checkVersion(Document updated) throws OutdatedException {
         Document current = repo.findOne(updated.getId());
         if (current.getVersion() > updated.getVersion()) {
-            throw new LockedException();
+            throw new OutdatedException();
         }
     }
 
