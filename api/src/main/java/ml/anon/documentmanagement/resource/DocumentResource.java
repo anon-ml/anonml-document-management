@@ -1,23 +1,25 @@
 package ml.anon.documentmanagement.resource;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import ml.anon.documentmanagement.model.Document;
 import ml.anon.exception.BadRequestException;
-import ml.anon.resource.Delete;
-import ml.anon.resource.Read;
-import ml.anon.resource.ReadAll;
-import ml.anon.resource.Update;
+import ml.anon.resource.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.AllArgsConstructor;
@@ -71,5 +73,26 @@ public class DocumentResource implements Read<Document>, ReadAll<Document>, Upda
     @Override
     public void delete(String id) throws BadRequestException {
         restTemplate.delete(documentManagementUrl + "/document/{id}", id);
+    }
+
+    public File findOriginalById(String id) {
+        String url = documentManagementUrl + "/document/{id}/original";
+        return restTemplate.getForEntity(url, File.class, id).getBody();
+    }
+
+    public Document importDocument(String fileName, byte[] doc) throws BadRequestException {
+
+        String base64 = Base64Utils.encodeToString(doc);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, "multipart/form-data");
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("doc", base64);
+        map.add("title", fileName);
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<Document> exchange = restTemplate
+                .exchange(documentManagementUrl + "/document/import", HttpMethod.POST, entity,
+                        Document.class);
+        return exchange.getBody();
     }
 }
