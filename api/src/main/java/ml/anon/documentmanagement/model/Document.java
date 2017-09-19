@@ -40,6 +40,9 @@ public class Document extends BaseEntity {
 
     private String fullText;
 
+
+    private DocumentState state;
+
     @NonNull
     private FileType originalFileType;
 

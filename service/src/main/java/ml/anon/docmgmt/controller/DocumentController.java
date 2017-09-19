@@ -11,6 +11,7 @@ import ml.anon.docmgmt.service.DocumentImportService;
 
 import ml.anon.docmgmt.service.TokenizerService;
 import ml.anon.documentmanagement.model.Document;
+import ml.anon.documentmanagement.model.DocumentState;
 import ml.anon.exception.NotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class DocumentController {
         stopWatch.start();
         byte[] bytes = Base64Utils.decodeFromString(file);
         Document body = service.doImport(bytes, title);
+
         log.info("Result: " + body);
         stopWatch.stop();
         log.info(stopWatch.shortSummary());
@@ -69,6 +71,7 @@ public class DocumentController {
         log.info("update id " + id);
         Duplicates duplicates = new Duplicates();
         Document one = repo.findOne(id);
+        one.setState(doc.getState());
         one.setAnonymizations(duplicates.removeDuplicates(doc.getAnonymizations()));
         repo.save(one);
         return ResponseEntity.ok(one);
@@ -126,6 +129,8 @@ public class DocumentController {
                        HttpServletResponse response, @PathVariable String id) throws IOException {
         log.info("Exporting document: " + id);
         Document one = repo.findOne(id);
+        one.setState(DocumentState.EXPORTED);
+        repo.save(one);
         File export = documentExportService.export(one);
 
 

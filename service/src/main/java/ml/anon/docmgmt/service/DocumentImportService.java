@@ -5,12 +5,14 @@ import ml.anon.docmgmt.controller.DocumentRepository;
 import ml.anon.docmgmt.extraction.ExtractionResult;
 import ml.anon.docmgmt.extraction.PDFExtractor;
 import ml.anon.documentmanagement.model.Document;
+import ml.anon.documentmanagement.model.DocumentState;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
@@ -36,7 +38,7 @@ public class DocumentImportService {
         List<String> text = extract.getPaginated();
         List<String> chunked = tokenizerService.tokenize(extract.getFullText());
 
-        return repo.save(Document.builder().file(file).fileName(fileName).text(text).fullText(extract.getFullText())
+        return repo.save(Document.builder().file(file).fileName(fileName).text(text).fullText(extract.getFullText()).state(DocumentState.UPLOADED)
                 .displayableText(extract.getFullText().replaceAll("\n", "<br/>"))
                 .chunks(chunked).originalFileType(extract.getType()).build());
     }
