@@ -8,6 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,9 @@ public class Document extends BaseEntity {
 
     @JsonIgnore
     private final static int MB_5 = 1024 * 1024 * 5;
+
+    @Version
+    private int version;
 
     private String fileName;
 

@@ -12,6 +12,7 @@ import ml.anon.docmgmt.service.DocumentImportService;
 import ml.anon.docmgmt.service.TokenizerService;
 import ml.anon.documentmanagement.model.Document;
 import ml.anon.documentmanagement.model.DocumentState;
+import ml.anon.exception.LockedException;
 import ml.anon.exception.NotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +68,11 @@ public class DocumentController {
     }
 
     @RequestMapping(value = "/document/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) {
+    public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) throws LockedException {
         log.info("update id " + id);
         Duplicates duplicates = new Duplicates();
         Document one = repo.findOne(id);
+        checkVersion(doc);
         one.setState(doc.getState());
         one.setAnonymizations(duplicates.removeDuplicates(doc.getAnonymizations()));
         repo.save(one);
@@ -139,6 +141,13 @@ public class DocumentController {
         IOUtils.copy(new FileInputStream(export), response.getOutputStream());
         response.getOutputStream().flush();
 
+    }
+
+    public void checkVersion(Document updated) throws LockedException {
+        Document current = repo.findOne(updated.getId());
+        if (current.getVersion() > updated.getVersion()) {
+            throw new LockedException();
+        }
     }
 
 

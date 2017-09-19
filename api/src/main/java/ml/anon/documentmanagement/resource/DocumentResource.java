@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import ml.anon.documentmanagement.model.Document;
 import ml.anon.exception.BadRequestException;
+import ml.anon.exception.LockedException;
 import ml.anon.resource.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -40,7 +41,7 @@ public class DocumentResource implements Read<Document>, ReadAll<Document>, Upda
 
 
     @Override
-    public Document update(String id, Document instance) {
+    public Document update(String id, Document instance) throws LockedException {
 
         String url = documentManagementUrl + "/document/{id}";
 
