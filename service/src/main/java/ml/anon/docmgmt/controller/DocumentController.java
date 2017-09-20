@@ -139,6 +139,7 @@ public class DocumentController {
 
     public void checkVersion(Document updated) throws OutdatedException {
         Document current = repo.findOne(updated.getId());
+        log.info("Check lock; current version: " + current.getVersion() + " provided version: " + updated.getVersion());
         if (current.getVersion() > updated.getVersion()) {
             throw new OutdatedException();
         }
