@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import lombok.extern.java.Log;
-import ml.anon.docmgmt.extraction.Duplicates;
+import ml.anon.docmgmt.extraction.ListPreparation;
 import ml.anon.docmgmt.service.DocumentExportService;
 import ml.anon.docmgmt.service.DocumentImportService;
 
@@ -64,11 +64,11 @@ public class DocumentController {
     @RequestMapping(value = "/document/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) throws OutdatedException {
         log.info("update id " + id);
-        Duplicates duplicates = new Duplicates();
+        ListPreparation listPreparation = new ListPreparation();
         Document one = repo.findOne(id);
         checkVersion(doc);
         one.setState(doc.getState());
-        one.setAnonymizations(duplicates.removeDuplicates(doc.getAnonymizations()));
+        one.setAnonymizations(listPreparation.prepareAnonymizationList(doc.getAnonymizations()));
         repo.save(one);
         return ResponseEntity.ok(one);
     }
