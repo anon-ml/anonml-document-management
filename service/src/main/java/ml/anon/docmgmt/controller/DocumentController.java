@@ -42,6 +42,9 @@ public class DocumentController {
     private EntityLinks links;
 
     @Autowired
+    private ListPreparation listPreparation = new ListPreparation();
+
+    @Autowired
     private TokenizerService tokenizerService;
 
     @Autowired
@@ -64,7 +67,7 @@ public class DocumentController {
     @RequestMapping(value = "/document/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Document> update(@PathVariable String id, @RequestBody Document doc) throws OutdatedException {
         log.info("update id " + id);
-        ListPreparation listPreparation = new ListPreparation();
+
         Document one = repo.findOne(id);
         checkVersion(doc);
         one.setState(doc.getState());
