@@ -47,6 +47,10 @@ public class Document extends BaseEntity {
 
     private DocumentState state;
 
+
+    private boolean analyzed;
+
+
     @NonNull
     private FileType originalFileType;
 
