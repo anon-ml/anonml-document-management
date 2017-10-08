@@ -32,7 +32,7 @@ public class PDFExtractor {
             pd.close();
             return ExtractionResult.builder().fullText(full).paginated(paginate(paginatable)).type(FileType.PDF).build();
         } catch (IOException e) {
-            throw new DocumentManagementException(e);
+            return null;
         }
 
     }
