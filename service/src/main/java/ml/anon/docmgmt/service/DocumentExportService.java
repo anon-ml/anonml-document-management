@@ -11,6 +11,7 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zeroturnaround.zip.ZipUtil;
 
@@ -30,7 +31,9 @@ public class DocumentExportService {
     private final static String COMPLEX_HTML = "-c";
     private final static String SINGLE_PAGE = "-s";
     private final static String PDF_LINKS = "-p";
-    private final Anonymizer anonymizer = new Anonymizer();
+
+    @Autowired
+    private Anonymizer anonymizer;
 
 
     public File export(Document doc) throws DocumentManagementException {
