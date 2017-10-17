@@ -50,12 +50,11 @@ public class Anonymizer {
      */
     public String anonymize(String document, List<Anonymization> anon) {
 
-
-        anon = anon.stream().filter(a -> a.getStatus().equals(Status.ACCEPTED)).collect(Collectors.toList());
-        anon = listPreparation.prepareAnonymizationList(anon);
+        anonymizations = MoreObjects.firstNonNull(anon, EMPTY);
+        anonymizations = anonymizations.stream().filter(a -> a.getStatus().equals(Status.ACCEPTED)).collect(Collectors.toList());
+        anonymizations = listPreparation.prepareAnonymizationList(anonymizations);
 
         anonymized = document.replace("&#160;", " ").replace("  ", " ");
-        anonymizations = MoreObjects.firstNonNull(anon, EMPTY);
         newAnons = new ArrayList<>();
         foundParts = new ArrayList<>();
 

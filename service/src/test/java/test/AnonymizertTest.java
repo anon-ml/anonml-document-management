@@ -2,11 +2,17 @@ package test;
 
 import com.google.common.collect.Lists;
 
+import ml.anon.AppDocumentManagement;
 import ml.anon.anonymization.model.Replacement;
+import ml.anon.anonymization.model.Status;
 import ml.anon.docmgmt.extraction.Anonymizer;
 import ml.anon.anonymization.model.Anonymization;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +25,10 @@ import static org.hamcrest.core.IsNot.not;
 /**
  * Created by mirco on 01.06.17.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {
+        AppDocumentManagement.class
+})
 public class AnonymizertTest {
 
   private String text =
@@ -58,12 +68,13 @@ public class AnonymizertTest {
           +
           "hat gespielt nur 25 Prozent der Spiel. Ich habe fertig! ...wenn es gab Fragen, ich kann Worte wiederholen...";
 
-  private List<Anonymization> anons = Lists.newArrayList(Anonymization.builder().data(
+  private List<Anonymization> anons = Lists.newArrayList(Anonymization.builder().status(Status.ACCEPTED).data(
       Replacement.builder().original("Zickler").replacement("H.").build()).build(),
-      Anonymization.builder().data(
+      Anonymization.builder().status(Status.ACCEPTED).data(
           Replacement.builder().original("diese Spieler").replacement("d. s.").build()).build());
 
-  private Anonymizer an = new Anonymizer();
+  @Autowired
+  private Anonymizer an;
 
   @Test
   public void anonymize() {
