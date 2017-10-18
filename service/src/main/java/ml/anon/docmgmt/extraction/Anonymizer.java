@@ -50,12 +50,11 @@ public class Anonymizer {
      */
     public String anonymize(String document, List<Anonymization> anon) {
 
-
-        anon = anon.stream().filter(a -> a.getStatus().equals(Status.ACCEPTED)).collect(Collectors.toList());
-        anon = listPreparation.prepareAnonymizationList(anon);
+        anonymizations = MoreObjects.firstNonNull(anon, EMPTY);
+        anonymizations = anonymizations.stream().filter(a -> a.getStatus().equals(Status.ACCEPTED)).collect(Collectors.toList());
+        anonymizations = listPreparation.prepareAnonymizationList(anonymizations);
 
         anonymized = document.replace("&#160;", " ").replace("  ", " ");
-        anonymizations = MoreObjects.firstNonNull(anon, EMPTY);
         newAnons = new ArrayList<>();
         foundParts = new ArrayList<>();
 
@@ -66,19 +65,42 @@ public class Anonymizer {
                 this.handleLineBreaks(anonymization);
 
             } else {
-                anonymized = anonymized
-                        .replaceAll(Pattern.quote(anonymization.getData().getOriginal()),
-                                anonymization.getData().getReplacement());
+                this.replaceOnlyText(anonymization.getData().getOriginal(), anonymization.getData().getReplacement(), false);
             }
         }
 
-
         for (Anonymization newAnon : newAnons) {
 
-            anonymized = anonymized.replaceAll(newAnon.getData().getOriginal(), newAnon.getData().getReplacement());
+            this.replaceOnlyText(newAnon.getData().getOriginal(), newAnon.getData().getReplacement(), true);
         }
 
         return anonymized;
+    }
+
+    /**
+     * Searches just for the text regions in the area from > to the </p> tag to not mess up the format
+     * @param original to replace
+     * @param replacement replacement for the original
+     */
+    private void replaceOnlyText(String original, String replacement, boolean newAnon) {
+
+        Pattern pattern = Pattern.compile("(?<=>)(.*)(?=</p>)");
+        Matcher matcher = pattern.matcher(anonymized);
+
+        StringBuffer newText = new StringBuffer();
+        if(!newAnon){
+            original = Pattern.quote(original);
+        }
+        while(matcher.find()){
+            matcher.appendReplacement(newText, "");
+            String temp = matcher.group(1);
+
+
+            newText.append(temp.replaceAll(original, replacement));
+
+        }
+        matcher.appendTail(newText);
+        anonymized = newText.toString();
     }
 
 
@@ -94,9 +116,7 @@ public class Anonymizer {
 
         if (anonymized.contains(originalLBReplaced)) {
 
-            anonymized = anonymized
-                    .replaceAll(Pattern.quote(originalLBReplaced),
-                            anonymization.getData().getReplacement());
+            this.replaceOnlyText(originalLBReplaced, anonymization.getData().getReplacement(), false);
         } else {
 
             this.handleLineBreakNoBr(anonymization);
@@ -112,19 +132,23 @@ public class Anonymizer {
     private void handleLineBreakNoBr(Anonymization anonymization) {
 
         String[] partsOfOriginal = anonymization.getData().getOriginal().split("\\n");
+
         int count = 0;
         for (String part : partsOfOriginal) {
 
             part = part.trim();
+            if(part.equals("")){
+                continue;
+            }
+
             if (foundParts.contains(part)) {
                 continue;
             }
 
-            if (anonymized.contains(part)) {
+            if (anonymized.contains(part) && (part.toCharArray().length > treshold)) {
                 foundParts.add(part);
-                anonymized = anonymized
-                        .replaceAll(Pattern.quote(part),
-                                anonymization.getData().getReplacement() + "-(" + (++count) + ")");
+
+                this.replaceOnlyText(part, anonymization.getData().getReplacement() + "-(" + (++count) + ")", false);
 
             } else {
 
