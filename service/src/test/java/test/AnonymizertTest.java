@@ -32,7 +32,7 @@ import static org.hamcrest.core.IsNot.not;
 public class AnonymizertTest {
 
   private String text =
-      "Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihnen Profi was sie sind. "
+      "<p> Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihnen Profi was sie sind. "
           +
           "Ich lese nicht sehr viele Zeitungen, aber ich habe gehört viele Situationen. Erstens: wir haben nicht offensiv gespielt."
           +
@@ -66,7 +66,7 @@ public class AnonymizertTest {
           +
           "diese Spieler. Ich habe immer die Schuld über diese Spieler. Einer ist Mario, einer andere ist Mehmet! Strunz ich spreche nicht, "
           +
-          "hat gespielt nur 25 Prozent der Spiel. Ich habe fertig! ...wenn es gab Fragen, ich kann Worte wiederholen...";
+          "hat gespielt nur 25 Prozent der Spiel. Ich habe fertig! ...wenn es gab Fragen, ich kann Worte wiederholen... </p>";
 
   private List<Anonymization> anons = Lists.newArrayList(Anonymization.builder().status(Status.ACCEPTED).data(
       Replacement.builder().original("Zickler").replacement("H.").build()).build(),
